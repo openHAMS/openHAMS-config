@@ -1,18 +1,7 @@
 'use strict';
 
+const {pick, uniq} = require('lodash');
 const jsonfile = require('jsonfile');
-
-function pick(o, ...fields) {
-    return fields.reduce((a, x) => {
-        if(o.hasOwnProperty(x)) a[x] = o[x];
-        return a;
-    }, {});
-}
-
-function distinct(list) {
-    // distinct - get unique values
-    return list.filter((v, i, a) => a.indexOf(v) === i);
-}
 
 
 class ConfigHandler {
@@ -20,7 +9,7 @@ class ConfigHandler {
         this.config = jsonfile.readFileSync(filename, 'utf8');
         this.cards = this.config.cards;
         let dirtyChannels = this.cards.map(card => card.cardData.channel);
-        this.allChannels = distinct(dirtyChannels);
+        this.allChannels = uniq(dirtyChannels);
     }
 
     getAllChannels() {
@@ -29,7 +18,7 @@ class ConfigHandler {
 
     getCardInfos() {
         // filter everything except name, type and cardData
-        let cardInfos = this.cards.map(card => pick(card, 'name', 'type', 'cardData'));
+        let cardInfos = pick(this.card, 'name', 'type', 'cardData');
         return cardInfos;
     }
 
