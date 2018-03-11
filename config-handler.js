@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const jsonfile = require('jsonfile');
 
@@ -34,8 +34,7 @@ class ConfigHandler {
     }
 
     getMqttChannel(cardname) {
-        let selectedCards = this.config.cards
-            .filter(card => card.name === cardname);
+        let selectedCards = this.config.cards.filter(card => card.name === cardname);
         return selectedCards.length === 1 ? selectedCards[0].cardData.channel : null;
     }
 }
