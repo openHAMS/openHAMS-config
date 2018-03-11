@@ -1,5 +1,7 @@
 'use strict';
 
+const debug = require('debug')('openHAMS-config');
+
 const micro = require('micro');
 const microrouter = require('microrouter');
 const path = require('path');
@@ -11,18 +13,18 @@ const configHandler = new ConfigHandler(path.join(__dirname, './config.json'));
 const service = microrouter.router(
     microrouter.get('/cards', (req, res) => {
         let cardInfos = configHandler.getCardInfos();
-        console.log('/cards');
+        debug('GET /cards');
         micro.send(res, 200, cardInfos);
     }),
     microrouter.get('/channels', (req, res) => {
         let channels = configHandler.getAllChannels();
-        console.log('/channels');
+        debug('GET /channels');
         micro.send(res, 200, channels);
     }),
     microrouter.get('/:cardname/channel', (req, res) => {
         let cardname = req.params.cardname;
         let channel = configHandler.getMqttChannel(cardname);
-        console.log(`/${req.params.cardname}/channel`);
+        debug(`GET /${req.params.cardname}/channel`);
         if (channel) {
             micro.send(res, 200, channel);
         } else {
@@ -34,4 +36,4 @@ const service = microrouter.router(
 
 const server = micro(service);
 server.listen(8000);
-console.log('Config service started.');
+debug('Config service started.');
