@@ -1,8 +1,8 @@
-'use strict'
+'use strict';
 
 const micro = require('micro');
 const microrouter = require('microrouter');
-const path = require("path");
+const path = require('path');
 
 const ConfigHandler = require(path.join(__dirname, 'config-handler'));
 const configHandler = new ConfigHandler(path.join(__dirname, './config.json'));
